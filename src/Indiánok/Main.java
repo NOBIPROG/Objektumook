@@ -2,6 +2,7 @@ package Indiánok;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Array;
 import java.util.*;
 
 public class Main {
@@ -16,9 +17,12 @@ public class Main {
         }
         System.out.println("Bizonyos törzs lakóinak száma: " + reservation.get("Seminole").size());
         System.out.println("Eszközök száma: " + printAllTools(indiánok));
-        System.out.println("Milyen a férfi arány a Seminole törzsben?\n" +countIndians(reservation,"f","Seminole")+ ":"+countIndians(reservation,"n","Seminole"));
+        System.out.println("Milyen a férfi arány a Seminole törzsben?\n" + countIndians(reservation, "f", "Seminole") + ":" + countIndians(reservation, "n", "Seminole"));
+        System.out.println("Vének tanácsának tagja: "+getOld(reservation, "Apache"));
+        System.out.println("A(z) "+mostPopulatedTribe(reservation)+" törzsben vannak a legtöbben");
+        System.out.println("Nemek aránya az egyes törzsekben:");
+        menRate(reservation);
     }
-
 
 
     public static int numberOfIndians(List<Indián> indiáns) {
@@ -61,13 +65,36 @@ public class Main {
         }
         return counter;
     }
-    public static double countOld(HashMap<String, List<Indián>> reservation, String tools, String tribe) {
-        double counter = 0;
+
+    public static ArrayList<String> getOld(HashMap<String, List<Indián>> reservation, String tribe) {
+        ArrayList<String> names = new ArrayList<String>();
         for (Indián indián : reservation.get(tribe)) {
-            if (indián.getTools().equals(tools)) {
-                counter++;
+            if (indián.getTools().contains("békepipa")) {
+                names.add(indián.getName());
+
             }
         }
-        return counter;
+        return names;
+    }
+
+    public static String mostPopulatedTribe(HashMap<String, List<Indián>> indian) {
+        Iterator<String> iterator = indian.keySet().iterator();
+        int nums = 0;
+        String tribe = "No one";
+        while (iterator.hasNext()) {
+            String s = iterator.next();
+            if (indian.get(s).size() > nums) {
+                nums = indian.get(s).size();
+                tribe = s;
+
+            }
+        }
+        System.out.print(nums + " ");
+        return tribe;
+    }
+    public static void menRate(HashMap<String, List<Indián>> indian) {
+        for(String tribe: indian.keySet()){
+            System.out.println(tribe+" "+ countIndians(indian,"f",tribe)+ ":"+countIndians(indian,"n",tribe));
+        }
     }
 }
