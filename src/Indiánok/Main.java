@@ -26,6 +26,7 @@ public class Main {
         System.out.println("whichTribesKidsHasMostTools? " + whichTribesKidsHasMostTools(reservation, 18));
         System.out.println("Törzsek egyes eszközeinek száma:");
         toolsOfEachTribes(reservation);
+
     }
 
 
