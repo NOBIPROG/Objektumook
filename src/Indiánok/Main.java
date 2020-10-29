@@ -18,10 +18,14 @@ public class Main {
         System.out.println("Bizonyos törzs lakóinak száma: " + reservation.get("Seminole").size());
         System.out.println("Eszközök száma: " + printAllTools(indiánok));
         System.out.println("Milyen a férfi arány a Seminole törzsben?\n" + countIndians(reservation, "f", "Seminole") + ":" + countIndians(reservation, "n", "Seminole"));
-        System.out.println("Vének tanácsának tagja: "+getOld(reservation, "Apache"));
-        System.out.println("A(z) "+mostPopulatedTribe(reservation)+" törzsben vannak a legtöbben");
+        System.out.println("Vének tanácsának tagja: " + getOld(reservation, "Apache"));
+        System.out.println("A(z) " + mostPopulatedTribe(reservation) + " törzsben vannak a legtöbben");
         System.out.println("Nemek aránya az egyes törzsekben:");
         menRate(reservation);
+        System.out.println("Melyik törzsben van a legtöbb férfinak tomahawkja? " + mostMenHasTomahowk(reservation, "tomahawk", "f"));
+        System.out.println("whichTribesKidsHasMostTools? " + whichTribesKidsHasMostTools(reservation, 18));
+        System.out.println("Törzsek egyes eszközeinek száma:");
+        toolsOfEachTribes(reservation);
     }
 
 
@@ -92,9 +96,73 @@ public class Main {
         System.out.print(nums + " ");
         return tribe;
     }
+
     public static void menRate(HashMap<String, List<Indián>> indian) {
-        for(String tribe: indian.keySet()){
-            System.out.println(tribe+" "+ countIndians(indian,"f",tribe)+ ":"+countIndians(indian,"n",tribe));
+        for (String tribe : indian.keySet()) {
+            System.out.println(tribe + " " + countIndians(indian, "f", tribe) + ":" + countIndians(indian, "n", tribe));
+        }
+    }
+
+    public static String mostMenHasTomahowk(HashMap<String, List<Indián>> indián, String tool, String gender) {
+        Iterator<String> tribe = indián.keySet().iterator();
+        String tribeName = "No one";
+        int nums = 0;
+        while (tribe.hasNext()) {
+            String s = tribe.next();
+            Iterator<Indián> tribeMembers = indián.get(s).listIterator();
+            int tribeMememberNums = 0;
+            while (tribeMembers.hasNext()) {
+                Indián actualIndian = tribeMembers.next();
+                if (actualIndian.getTools().contains(tool) && actualIndian.getGender().equals(gender)) {
+                    tribeMememberNums++;
+                }
+                if (tribeMememberNums > nums) {
+                    nums = tribeMememberNums;
+                    tribeName = s;
+                }
+            }
+        }
+        return tribeName;
+    }
+
+    public static String whichTribesKidsHasMostTools(HashMap<String, List<Indián>> indián, int age) {
+        Iterator<String> tribe = indián.keySet().iterator();
+        String tribeName = "No one";
+        int nums = 0;
+        while (tribe.hasNext()) {
+            String s = tribe.next();
+            Iterator<Indián> tribeMembers = indián.get(s).listIterator();
+            int tribeKidsToolsNums = 0;
+            while (tribeMembers.hasNext()) {
+                Indián actualIndian = tribeMembers.next();
+                if (actualIndian.getAge() < age) {
+                    tribeKidsToolsNums += actualIndian.getTools().size();
+                }
+                if (tribeKidsToolsNums > nums) {
+                    nums = tribeKidsToolsNums;
+                    tribeName = s;
+                }
+            }
+        }
+        return tribeName;
+    }
+    public static void toolsOfEachTribes(HashMap<String, List<Indián>> indians){
+        for(String tribeName:indians.keySet()){
+            int toolsSum=0;
+            for (Indián indián:indians.get(tribeName)){
+                toolsSum+=indián.getTools().size();
+            }
+            System.out.println(tribeName+ " "+toolsSum);
+        }
+    }
+    public static void eachToolsNumsOfEachTribes(HashMap<String, List<Indián>> indians){
+        for(String tribeName:indians.keySet( )){
+            HashMap<List<String>, ArrayList<String>>tools=new HashMap<>();
+            int toolsSum=0;
+            for (Indián indián:indians.get(tribeName)){
+
+            }
+            System.out.println(tribeName+ " "+toolsSum);
         }
     }
 }
